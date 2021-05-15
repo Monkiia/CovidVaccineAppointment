@@ -9,5 +9,6 @@ urlpatterns = [
     path('UserAPI',views.touserapi),
     path('ProviderAPI',views.toproviderapi),
     path('UserRegister',views.touserregister),
-    path('ProviderRegister',views.toproviderregister)
+    path('ProviderRegister',views.toproviderregister),
+    path('UserRegisterDataInput',views.touserregisterdatainput)
 ]

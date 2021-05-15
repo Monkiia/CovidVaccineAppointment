@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create And Modify User Schedule</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<form action="/CovidVaccine/tocreateormodifyschedule" method="get">
+    <div style="text-align: center;">
+        <b><i>
+            <label for="weekcount"> LOCK WEEK
+                <input type="text" id="weekcount" name="weekcount" value=""> Schedule (You can not change it after
+                submit)</label>
+        </i></b>
+    </div>
+    <div style="text-align: center;">
+        <b><i>
+            <label for="capacity"> ENTER YOUR CAPACITY FOR THIS WEEK</label>
+            <input type="text" id="capacity" name="capacity" value="">
+
+        </i></b>
+    </div>
+
+    <div style="text-align: center;">
+        <b><i>
+            By Capacity, I mean how many patients you can handle per each available slot time.
+        </i></b>
+    </div>
+
+    <br>
+    <HR>
+    <br>
+    <b><i>Pick Your available slots</i></b> <br>
+    <table>
+        <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="1" name="1" value="True">
+                <label for="1"> Morning</label></td>
+            <td><input type="checkbox" id="3" name="3" value="True">
+                <label for="3"> Morning</label></td>
+            <td><input type="checkbox" id="5" name="5" value="True">
+                <label for="5"> Morning</label></td>
+            <td><input type="checkbox" id="7" name="7" value="True">
+                <label for="7"> Morning</label></td>
+            <td><input type="checkbox" id="9" name="9" value="True">
+                <label for="9"> Morning</label></td>
+            <td><input type="checkbox" id="11" name="11" value="True">
+                <label for="11"> Morning</label></td>
+            <td><input type="checkbox" id="13" name="13" value="True">
+                <label for="13"> Morning</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="2" name="2" value="True">
+                <label for="2"> Afternoon</label></td>
+            <td><input type="checkbox" id="4" name="4" value="True">
+                <label for="4"> Afternoon</label></td>
+            <td><input type="checkbox" id="6" name="6" value="True">
+                <label for="6"> Afternoon</label></td>
+            <td><input type="checkbox" id="8" name="8" value="True">
+                <label for="8"> Afternoon</label></td>
+            <td><input type="checkbox" id="10" name="10" value="True">
+                <label for="10"> Afternoon</label></td>
+            <td><input type="checkbox" id="12" name="12" value="True">
+                <label for="12"> Afternoon</label></td>
+            <td><input type="checkbox" id="14" name="14" value="True">
+                <label for="14"> Afternoon</label></td>
+        </tr>
+
+    </table>
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

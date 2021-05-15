@@ -18,5 +18,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include("CovidVaccine.urls")),
     path('CovidVaccine/', include("CovidVaccine.urls"))
 ]
