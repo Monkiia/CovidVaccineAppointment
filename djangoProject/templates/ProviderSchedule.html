@@ -22,7 +22,8 @@
     </style>
 </head>
 <body>
-<form action="/CovidVaccine/tocreateormodifyschedule" method="get">
+<form action="/CovidVaccine/provideraddschedule" method="post">
+    <input type="hidden" name="pid" value={{ pid }}>
     <div style="text-align: center;">
         <b><i>
             <label for="weekcount"> LOCK WEEK
@@ -40,7 +41,9 @@
 
     <div style="text-align: center;">
         <b><i>
-            By Capacity, I mean how many patients you can handle per each available slot time.
+            <b><i>Enter your Maximum Distance Limit</i></b> <br>
+            <input type="text" id="distancelimit" name="distancelimit" value=""><br>
+            <br>
         </i></b>
     </div>
 

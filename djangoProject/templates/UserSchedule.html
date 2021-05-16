@@ -22,8 +22,8 @@
     </style>
 </head>
 <body>
-<form action="/CovidVaccine/tocreateormodifyschedule" method="get">
-
+<form action="/CovidVaccine/tocreateormodifyschedule" method="post">
+    <input type = "hidden" name = "SSN" value={{ SSN }}>
     <b><i>Enter your Maximum Distance Limit</i></b> <br>
     <input type="text" id="distancelimit" name="distancelimit" value=""><br>
     <br>

@@ -74,6 +74,16 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class Distance(models.Model):
+    ssn = models.IntegerField()
+    pid = models.IntegerField()
+    distance = models.TextField()  # This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'distance'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -119,11 +129,71 @@ class DjangoSession(models.Model):
 
 
 class Prioritydate(models.Model):
-    priorityid = models.AutoField(primary_key=True)
+    priorityid = models.IntegerField()
+    slotid = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'prioritydate'
+
+
+class Provider(models.Model):
+    name = models.CharField(max_length=20)
+    phone = models.IntegerField()
+    pid = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'provider'
+
+
+class ProviderAvailability(models.Model):
+    pid = models.IntegerField()
+    slotid = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'provider_availability'
+
+
+class ProviderTravelLimit(models.Model):
+    pid = models.IntegerField()
+    distance = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'provider_travel_limit'
+
+
+class ProviderWeekLock(models.Model):
+    pid = models.IntegerField()
+    week = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'provider_week_lock'
+
+
+class Provideraddress(models.Model):
+    street = models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
+    state = models.CharField(max_length=20)
+    zipcode = models.IntegerField()
+    locationx = models.IntegerField()
+    locationy = models.IntegerField()
+    pid = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'provideraddress'
+
+
+class Timeblock(models.Model):
+    description = models.CharField(max_length=20, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'timeblock'
 
 
 class User(models.Model):
@@ -131,11 +201,29 @@ class User(models.Model):
     ssn = models.IntegerField()
     age = models.CharField(max_length=20)
     phone = models.IntegerField()
-    prioirtyid = models.IntegerField()
+    priorityid = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'user'
+
+
+class UserAvailability(models.Model):
+    ssn = models.IntegerField()
+    slotid = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_availability'
+
+
+class UserTravelLimit(models.Model):
+    ssn = models.IntegerField()
+    distance = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_travel_limit'
 
 
 class Useraddress(models.Model):
@@ -145,6 +233,7 @@ class Useraddress(models.Model):
     zipcode = models.IntegerField()
     locationx = models.IntegerField()
     locationy = models.IntegerField()
+    ssn = models.IntegerField()
 
     class Meta:
         managed = False
@@ -154,6 +243,7 @@ class Useraddress(models.Model):
 class Userlogin(models.Model):
     email = models.CharField(max_length=20)
     password = models.CharField(max_length=20)
+    ssn = models.IntegerField()
 
     class Meta:
         managed = False
