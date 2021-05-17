@@ -7,8 +7,10 @@
 <body>
 <br>
 
-This section is for manage current appointments
-
+<form action="/CovidVaccine/ProviderSeeAppointments" method="POST" >
+    <input type = "hidden" name = "pid" value={{ pid }}>
+    <input type="submit" value="See your appointments">
+</form>
 <HR>
 
 <form action="/CovidVaccine/ProviderSchedule" method="POST" >

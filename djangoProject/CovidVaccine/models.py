@@ -8,6 +8,19 @@
 from django.db import models
 
 
+class Appointment(models.Model):
+    ssn = models.IntegerField()
+    slotid = models.IntegerField()
+    pid = models.IntegerField()
+    user_accepted = models.CharField(max_length=20)
+    user_canceled = models.CharField(max_length=20, blank=True, null=True)
+    user_showedup = models.CharField(max_length=20)
+    id = models.IntegerField(primary_key=True,null=False,auto_created=True)
+    class Meta:
+        managed = False
+        db_table = 'appointment'
+
+
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -74,6 +87,28 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class Baduser(models.Model):
+    ssn = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'baduser'
+
+
+class Cancelledappointment(models.Model):
+    ssn = models.IntegerField()
+    slotid = models.IntegerField()
+    pid = models.IntegerField()
+    user_accepted = models.CharField(max_length=20)
+    user_canceled = models.CharField(max_length=20)
+    user_showedup = models.CharField(max_length=20)
+    id = models.IntegerField(primary_key=True,null=False,auto_created=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cancelledappointment'
+
+
 class Distance(models.Model):
     ssn = models.IntegerField()
     pid = models.IntegerField()
@@ -128,6 +163,20 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Notacceptedappointment(models.Model):
+    ssn = models.IntegerField()
+    slotid = models.IntegerField()
+    pid = models.IntegerField()
+    user_accepted = models.CharField(max_length=20)
+    user_canceled = models.CharField(max_length=20)
+    user_showedup = models.CharField(max_length=20)
+    id = models.IntegerField(primary_key=True,null=False,auto_created=True)
+
+    class Meta:
+        managed = False
+        db_table = 'notacceptedappointment'
+
+
 class Prioritydate(models.Model):
     priorityid = models.IntegerField()
     slotid = models.IntegerField()
@@ -150,6 +199,7 @@ class Provider(models.Model):
 class ProviderAvailability(models.Model):
     pid = models.IntegerField()
     slotid = models.IntegerField()
+    capacity = models.IntegerField()
 
     class Meta:
         managed = False
@@ -188,12 +238,22 @@ class Provideraddress(models.Model):
         db_table = 'provideraddress'
 
 
-class Timeblock(models.Model):
-    description = models.CharField(max_length=20, blank=True, null=True)
+class Slotblock(models.Model):
+    description = models.CharField(db_column='Description', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    slotid = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'timeblock'
+        db_table = 'slotblock'
+
+
+class TimeblockDgTmp(models.Model):
+    description = models.CharField(max_length=20, blank=True, null=True)
+    slotid = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'timeblock_dg_tmp'
 
 
 class User(models.Model):

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User see appointments</title>
+</head>
+<body>
+<b><i>Ongoing Appointment</i></b>
+<table summary="Available Appointment">
+    <th>Provider ID</th>
+    <th>slotid</th>
+    <th>User_accepted</th>
+    <th>User_cancelled</th>
+    <th>User_showedup</th>
+    {% for rows in appointments %}
+        <tr>
+            <td>{{ rows.pid }}</td>
+            <td>{{ rows.slotid }}</td>
+            <td>{{ rows.user_accepted }}</td>
+            <td>{{ rows.user_canceled }}</td>
+            <td>{{ rows.user_showedup }}</td>
+        </tr>
+        <br>
+        <form action="/CovidVaccine/LearnProvider" method="POST">
+            <input type="hidden" name="PID" value={{ rows.pid }}>
+            <input type="submit" value="Learn The Provider!">
+        </form>
+        <form action="/CovidVaccine/LearnTime" method="POST">
+            <input type="hidden" name="slotid" value={{ rows.slotid }}>
+            <input type="submit" value="Learn The Time!">
+        </form>
+        <form action="/CovidVaccine/ComputeDistance" method="POST">
+            <input type="hidden" name="SSN" value={{ rows.ssn }}>
+            <input type="hidden" name="PID" value={{ rows.pid }}>
+            <input type="submit" value="Compute The Distance!">
+        </form>
+        <br>
+        <form action="/CovidVaccine/AcceptOffer" method="POST">
+            <input type="hidden" name="SSN" value={{ rows.ssn }}>
+            <input type="hidden" name="PID" value={{ rows.pid }}>
+            <input type="submit" value="Accept Offer">
+        </form>
+        <form action="/CovidVaccine/DeclineOffer" method="POST">
+            <input type="hidden" name="SSN" value={{ rows.ssn }}>
+            <input type="hidden" name="PID" value={{ rows.pid }}>
+            <input type="submit" value="Decline Offer">
+        </form>
+        <form action="/CovidVaccine/CancelOffer" method="POST">
+            <input type="hidden" name="SSN" value={{ rows.ssn }}>
+            <input type="hidden" name="PID" value={{ rows.pid }}>
+            <input type="submit" value="Cancel Offer">
+        </form>
+    {% endfor %}
+</table>
+
+
+<HR>
+<b><i>NOT ACCEPTED Appointment</i></b>
+<table summary="NOT ACCEPTED Appointment">
+    <th>Patient SSN</th>
+    <th>slotid</th>
+    <th>User_accepted</th>
+    <th>User_cancelled</th>
+    <th>User_showedup</th>
+    {% for rows in NOT_ACCEPTED %}
+        <tr>
+            <td>{{ rows.ssn }}</td>
+            <td>{{ rows.slotid }}</td>
+            <td>{{ rows.user_accepted }}</td>
+            <td>{{ rows.user_canceled }}</td>
+            <td>{{ rows.user_showedup }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</table>
+<HR>
+<b><i>CANCELLED Appointment</i></b>
+<table summary="CANCELLED Appointment">
+    <th>Patient SSN</th>
+    <th>slotid</th>
+    <th>User_accepted</th>
+    <th>User_cancelled</th>
+    <th>User_showedup</th>
+    {% for rows in CANCELLED %}
+        <tr>
+            <td>{{ rows.ssn }}</td>
+            <td>{{ rows.slotid }}</td>
+            <td>{{ rows.user_accepted }}</td>
+            <td>{{ rows.user_canceled }}</td>
+            <td>{{ rows.user_showedup }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

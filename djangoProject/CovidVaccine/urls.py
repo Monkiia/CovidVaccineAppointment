@@ -15,5 +15,14 @@ urlpatterns = [
     path('help',views.tohelp),
     path('UserSchedule',views.touserschedule),
     path('tocreateormodifyschedule',views.updateuserschedule),
-    path('provideraddschedule',views.providertoaddschedule)
+    path('provideraddschedule',views.providertoaddschedule),
+    path('asynchronous_calculate_and_update',views.calculate_and_update),
+    path('ProviderSeeAppointments',views.providertoseeappointments),
+    path('Usertoseeappointmentoffer',views.tousertoseeoffer),
+    path('LearnProvider',views.tolearnprovider),
+    path('LearnTime',views.tolearntime),
+    path('ComputeDistance',views.tocomputedistance),
+    path('AcceptOffer',views.toacceptoffer),
+    path('DeclineOffer',views.todeclineoffer),
+    path('CancelOffer',views.tocanceloffer)
 ]
