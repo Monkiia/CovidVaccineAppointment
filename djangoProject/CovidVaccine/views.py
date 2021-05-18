@@ -427,3 +427,79 @@ def tocanceloffer(request):
     userappointment.user_canceled = "True"
     userappointment.save()
     return HttpResponse("You wasted other people's time. YOU DESERVE TO GET COVID")
+
+def toquery3(request):
+    con = sqlite3.connect('db.sqlite3')
+    cur = con.cursor()
+    sql_query = '''SELECT provider.pid,user.priorityid,distance.distance,provider_availability.capacity,user_availability.slotid
+                   FROM user,provider,distance,provider_availability,user_availability,user_travel_limit,provider_travel_limit
+                   WHERE user.ssn = 357550302
+                        AND provider.pid = distance.pid
+                        AND provider.pid = provider_availability.pid
+                        AND user.ssn = user_availability.ssn
+                        AND user_availability.slotid = provider_availability.slotid
+                        AND provider_availability.capacity > 0
+                        AND user_travel_limit.ssn = user.ssn
+                        AND provider_travel_limit.pid = provider.pid
+                        AND distance.distance <= user_travel_limit.distance
+                        AND distance.distance <= provider_travel_limit.distance
+                        AND user.ssn NOT in (SELECT ssn from appointment)
+                    ORDER BY user.priorityid ASC, distance.distance ASC
+                   '''
+    cur.execute(sql_query)
+    data = cur.fetchall()
+    con.close()
+    return HttpResponse(data)
+
+
+def toquery5(request):
+    con = sqlite3.connect('db.sqlite3')
+    cur = con.cursor()
+    sql_query = '''SELECT user.ssn,user.name, slotblock.Description
+                    FROM user,prioritydate,slotblock
+                    WHERE user.priorityid = prioritydate.priorityid
+                    AND prioritydate.slotid = slotblock.slotid
+    '''
+    cur.execute(sql_query)
+    data = cur.fetchall()
+    con.close()
+    return HttpResponse(data)
+
+def toquery6(request):
+    con = sqlite3.connect('db.sqlite3')
+    cur = con.cursor()
+    sql_query = '''SELECT ssn
+                    FROM cancelledappointment
+                    group by ssn
+                    having count(*) >= 3
+    '''
+    cur.execute(sql_query)
+    data1 = cur.fetchall()
+    sql_query = '''SELECT ssn
+                    FROM appointment
+                    WHERE user_showedup = "False"
+                    group by ssn
+                    having count() >= 2
+    '''
+    cur.execute(sql_query)
+    data2 = cur.fetchall()
+    listofdata = [data1,data2]
+    con.close()
+    return HttpResponse(listofdata)
+
+
+def toquery7(request):
+    con = sqlite3.connect('db.sqlite3')
+    cur = con.cursor()
+    sql_query = '''SELECT provider.pid, name
+                    FROM provider, appointment
+                    WHERE provider.pid=appointment.pid
+                    AND user_showedup = "True"
+                    GROUP BY provider.pid, name
+                    ORDER BY COUNT(*) DESC
+                    LIMIT 1
+    '''
+    cur.execute(sql_query)
+    data = cur.fetchall()
+    con.close()
+    return HttpResponse(data)

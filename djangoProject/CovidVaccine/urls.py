@@ -24,5 +24,9 @@ urlpatterns = [
     path('ComputeDistance',views.tocomputedistance),
     path('AcceptOffer',views.toacceptoffer),
     path('DeclineOffer',views.todeclineoffer),
-    path('CancelOffer',views.tocanceloffer)
+    path('CancelOffer',views.tocanceloffer),
+    path('Query3',views.toquery3),
+    path('Query5', views.toquery5),
+    path('Query6', views.toquery6),
+    path('Query7', views.toquery7)
 ]
