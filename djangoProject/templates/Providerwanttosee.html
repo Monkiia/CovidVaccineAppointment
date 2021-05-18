@@ -6,59 +6,33 @@
 </head>
 <body>
 <b><i>Ongoing Appointment</i></b>
-<table summary="Available Appointment">
-    <th>Patient SSN</th>
-    <th>slotid</th>
-    <th>User_accepted</th>
-    <th>User_cancelled</th>
-    <th>User_showedup</th>
+<HR>
+<b> <i> Patient_Name || Time || User_accepted || User_cancelled || User_showedup </i></b>
+    <br>
     {% for rows in appointments %}
-        <tr>
-            <td>{{ rows.ssn }}</td>
-            <td>{{ rows.slotid }}</td>
-            <td>{{ rows.user_accepted }}</td>
-            <td>{{ rows.user_canceled }}</td>
-            <td>{{ rows.user_showedup }}</td>
-        </tr>
+        {{ rows }}
+        <br>
     {% endfor %}
-</table>
+
 <HR>
 <b><i>NOT ACCEPTED Appointment</i></b>
-<table summary="NOT ACCEPTED Appointment">
-    <th>Patient SSN</th>
-    <th>slotid</th>
-    <th>User_accepted</th>
-    <th>User_cancelled</th>
-    <th>User_showedup</th>
+<HR>
+<b> <i> Patient_Name || Time || User_accepted || User_cancelled || User_showedup </i></b>
+    <br>
     {% for rows in NOT_ACCEPTED %}
-        <tr>
-            <td>{{ rows.ssn }}</td>
-            <td>{{ rows.slotid }}</td>
-            <td>{{ rows.user_accepted }}</td>
-            <td>{{ rows.user_canceled }}</td>
-            <td>{{ rows.user_showedup }}</td>
-        </tr>
+        {{ rows }}
+        <br>
     {% endfor %}
-</table>
-</table>
+
 <HR>
 <b><i>CANCELLED Appointment</i></b>
-<table summary="CANCELLED Appointment">
-    <th>Patient SSN</th>
-    <th>slotid</th>
-    <th>User_accepted</th>
-    <th>User_cancelled</th>
-    <th>User_showedup</th>
+<HR>
+<b> <i> Patient_Name || Time || User_accepted || User_cancelled || User_showedup </i></b>
+    <br>
     {% for rows in CANCELLED %}
-        <tr>
-            <td>{{ rows.ssn }}</td>
-            <td>{{ rows.slotid }}</td>
-            <td>{{ rows.user_accepted }}</td>
-            <td>{{ rows.user_canceled }}</td>
-            <td>{{ rows.user_showedup }}</td>
-        </tr>
+        {{ rows }}
+        <br>
     {% endfor %}
-</table>
 
 </body>
 </html>

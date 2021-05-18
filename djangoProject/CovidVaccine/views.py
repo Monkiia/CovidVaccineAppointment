@@ -9,6 +9,11 @@ import sqlite3
 # Create your views here.
 from django.template.defaulttags import csrf_token
 
+def determinebaduser(ssn):
+    if len(list(Baduser.objects.filter(ssn=ssn).values('ssn'))) >= 3:
+        return 1
+    return 0
+
 
 def tocovidvaccine(request):
     return render(request, 'covidvaccinemain.html')
@@ -30,7 +35,10 @@ def touserapi(request):
             return HttpResponse("Can not find your email address, please reenter or register")
         result = list(Userlogin.objects.filter(email=email).values('password'))[0]['password']
         if result == password:
-            context = {"SSN": list(Userlogin.objects.filter(email=email).values('ssn'))[0]['ssn'],
+            ssn = list(Userlogin.objects.filter(email=email).values('ssn'))[0]['ssn']
+            if determinebaduser(ssn):
+                return HttpResponse("You are a bad user. Go away!")
+            context = {"SSN": ssn,
                        "Email": email,
                        "Password": password}
             return render(request, 'userapi.html', context)
@@ -43,6 +51,11 @@ def touserapi(request):
 def touserschedule(request):
     userssn = request.POST.get('SSN', '')
     context = {"SSN": userssn}
+    if Appointment.objects.filter(ssn=userssn,user_accepted="pending"):
+        return HttpResponse("You having pending appointment to check. You cannot modify schedule unless you decline your current appointment")
+    if Appointment.objects.filter(ssn=userssn,user_accepted="True"):
+        if Appointment.objects.filter(ssn=userssn,user_accepted="True",user_canceled="pending"):
+            return HttpResponse("You already accepted an offer! No need to modify your schedule")
     ##return HttpResponse(request.POST.get('SSN', ''))
     return render(request, 'UserSchedule.html', context)
 
@@ -148,10 +161,11 @@ def toproviderschedule(request):
 
 
 def tohelp(request):
-    listshit = list(Distance.objects.values("pid", "ssn", "distance"))
-    for i in listshit:
-        print(i['pid'], i['ssn'], i['distance'])
-    return HttpResponse(listshit)
+    # listshit = list(Distance.objects.values("pid", "ssn", "distance"))
+    # for i in listshit:
+    #     print(i['pid'], i['ssn'], i['distance'])
+    ssn = 347000000
+    return HttpResponse(determinebaduser(ssn))
 
 
 def touserregisterdatainput(request):
@@ -297,6 +311,8 @@ def calculate_and_update(request):
         if Cancelledappointment.objects.filter(ssn=ssn,slotid=slotid,pid=provider).exists():
             continue
         if (provider,slotid) not in provider_slot_hashmap.keys():
+            if determinebaduser(ssn):
+                continue
             if ssn in userhashset:
                 continue
             provider_slot_hashmap[(provider,slotid)] = providercapacity - 1
@@ -339,8 +355,21 @@ def providertoseeappointments(request):
     data = Appointment.objects.filter(pid=pid)
     notaccepted = Notacceptedappointment.objects.filter(pid=pid)
     cancelled = Cancelledappointment.objects.filter(pid=pid)
-    context = {"appointments":data,"NOT_ACCEPTED":notaccepted,"CANCELLED":cancelled}
+    con = sqlite3.connect('db.sqlite3')
+    cur = con.cursor()
+    update_appointment_query = 'SELECT name,Description,user_accepted,user_canceled,user_showedup FROM appointment,user,slotblock WHERE appointment.pid =? and appointment.ssn = user.ssn and appointment.slotid = slotblock.slotid'
+    update_cancelledappointment_query = 'SELECT name,Description,user_accepted,user_canceled,user_showedup FROM cancelledappointment,user,slotblock WHERE cancelledappointment.pid =? and cancelledappointment.ssn = user.ssn and cancelledappointment.slotid = slotblock.slotid'
+    update_declineappointment_query = 'SELECT name,Description,user_accepted,user_canceled,user_showedup FROM notacceptedappointment,user,slotblock WHERE notacceptedappointment.pid =? and notacceptedappointment.ssn = user.ssn and notacceptedappointment.slotid = slotblock.slotid'
+    cur.execute(update_appointment_query, pid)
+    appointmentdata = cur.fetchall()
+    cur.execute(update_cancelledappointment_query, pid)
+    cancelleddata = cur.fetchall()
+    cur.execute(update_declineappointment_query, pid)
+    declineddata = cur.fetchall()
+    con.close()
+    context = {"appointments":appointmentdata,"NOT_ACCEPTED":cancelleddata,"CANCELLED":declineddata}
     return render(request,'Providerwanttosee.html',context)
+
 
 def tousertoseeoffer(request):
     ssn = request.POST.get('SSN')
